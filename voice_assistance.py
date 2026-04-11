@@ -2,9 +2,10 @@ import speech_recognition as sr
 import pyttsx3
 from datetime import datetime
 
+engine = pyttsx3.init()
+engine.setProperty('rate', 150)
+
 def speak(text):
-    engine = pyttsx3.init()
-    rate = engine.getProperty('rate', 150)
     engine.say(text)
     engine.runAndWait()
 
@@ -12,7 +13,7 @@ def get_audio():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("???? Speak now...")
-        audio = r.listen(source)
+        audio = r.listen(source, timeout=5)
 
         try:
             command = r.recognize_google(audio)
@@ -54,5 +55,7 @@ def main():
     while True:
         command = get_audio()
         if command and not respond_to_command(command):
-            #break
-            exit()
+            break
+        
+if __name__ == "__main__":
+    main()
